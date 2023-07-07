@@ -1,0 +1,13 @@
+diff --git a/app/linux-pre-vcpkg.sh b/app/linux-pre-vcpkg.sh
+index 5059436cd..f6d20a82e 100755
+--- a/app/linux-pre-vcpkg.sh
++++ b/app/linux-pre-vcpkg.sh
+@@ -25,6 +25,8 @@ done
+ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ WORKING_DIR="$(pwd)"
+
++export CC=/usr/bin/gcc-12 CXX=/usr/bin/g++-12
++
+ cd "${SCRIPT_DIR}"
+
+ # Build vcpkg

@@ -1,0 +1,37 @@
+# Maintainer: Robert Pannick <rwpannick@gmail.com>
+
+pkgname=crossguid
+pkgver=0.2.2.r52.gca1bf4b
+pkgrel=1
+pkgdesc="a minimal, cross platform, C++ GUID library"
+arch=('x86_64' 'x86_64_v3')
+url="https://github.com/graeme-hill/crossguid"
+license=(MIT)
+depends=('gcc-libs' 'util-linux-libs')
+makedepends=('cpio' 'git' 'cmake' 'ninja')
+provides=('crossguid')
+conflicts=('libcrossguid')
+source=($pkgname.tar.gz)
+sha256sums=('ef87ae1a8e66d490c09f9027fb5a9432b247e11443d00a8af4675878f28e105a')
+
+build() {
+  cd $pkgname
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS=ON \
+    -DCROSSGUID_TESTS=ON \
+    -Wno-dev \
+    -G Ninja
+
+}
+
+package() {
+  cd $pkgname
+
+  DESTDIR="$pkgdir" ninja -C build install
+
+  install -Dm644 README.md \
+    -t "$pkgdir"/usr/share/doc/$pkgname
+}

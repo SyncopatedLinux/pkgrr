@@ -1,0 +1,193 @@
+# Maintainer: David Runge <dvzrv@archlinux.org>
+
+_pkgbase=lsp-plugins
+pkgbase=lsp-plugins-git
+_pkgname=(lsp-plugins{,-{clap,docs,ladspa,lv2,standalone,vst}} liblsp-r3d-glx-lib)
+pkgname=(lsp-plugins{,-{clap,docs,ladspa,lv2,standalone,vst}}-git liblsp-r3d-glx-lib-git)
+pkgver=1.2.5.r0.g4ffd3dd5
+pkgrel=1
+pkgdesc="Collection of open-source plugins"
+arch=(x86_64 x86_64_v3)
+url="https://lsp-plug.in"
+license=(LGPL3)
+makedepends=(git cairo gcc-libs glibc hicolor-icon-theme libglvnd libx11 libxrandr jack ladspa libsndfile lv2 php)
+checkdepends=(jq lv2lint)
+conflicts=(lsp-plugins)
+source=("${_pkgbase}"::"git+https://github.com/sadko4u/lsp-plugins.git")
+sha512sums=('SKIP')
+b2sums=('SKIP')
+
+_pick() {
+  local p="$1" f d; shift
+  for f; do
+    d="$srcdir/$p/${f#$pkgdir/}"
+    mkdir -p "$(dirname "$d")"
+    mv "$f" "$d"
+    rmdir -p --ignore-fail-on-non-empty "$(dirname "$f")"
+  done
+}
+
+pkgver() {
+  cd "${_pkgbase}"
+  git describe --long --tags | sed -r 's/([^-]*-g)/r\1/;s/-/./g'
+}
+
+build() {
+  make config VERBOSE=1 ARTIFACT_EXPORT_HEADERS=1 FEATURES='clap doc lv2 vst2 jack ladspa xdg' PREFIX=/usr -C ${_pkgbase}
+  make fetch -C ${_pkgbase}
+  make VERBOSE=1 -C ${_pkgbase}
+}
+
+check() {
+  local _plugin
+  local _lv2_uri="http://lsp-plug.in/plugins/lv2/"
+
+  # install to temporary location
+  make FEATURES=lv2 DESTDIR="$PWD/test" install -C ${_pkgbase}
+
+  for _plugin in $(jq -r '.plugins[].id' ${_pkgbase}/.build/target/lsp-plugin-fw/plugins.json); do
+    printf "Testing plugin %s\n" "$_plugin"
+    lv2lint -Mpack -I "$PWD/test/usr/lib/lv2/${_pkgname}.lv2/" $_lv2_uri$_plugin
+  done
+}
+
+package_lsp-plugins-git() {
+  depends=(${_pkgbase}-{clap,ladspa,lv2,standalone,vst})
+  optdepends=(
+    'lsp-plugins-docs: for documentation'
+  )
+
+  make PREFIX=/usr DESTDIR="$pkgdir" install -C ${_pkgbase}
+  printf "successfully installed to pkgdir\n"
+
+  (
+    cd "$pkgdir"
+    _pick liblsp-r3d-glx-lib usr/include/*
+    _pick liblsp-r3d-glx-lib usr/lib/liblsp*
+    _pick liblsp-r3d-glx-lib usr/lib/pkgconfig/*
+    _pick ${_pkgbase}-clap usr/lib/clap/*
+    _pick ${_pkgbase}-docs usr/share/doc/*
+    _pick ${_pkgbase}-ladspa usr/lib/ladspa/*
+    _pick ${_pkgbase}-lv2 usr/lib/lv2/*
+    _pick ${_pkgbase}-standalone etc/*
+    _pick ${_pkgbase}-standalone usr/bin/*
+    _pick ${_pkgbase}-standalone usr/lib/${_pkgbase}/*
+    _pick ${_pkgbase}-standalone usr/share/applications/*
+    _pick ${_pkgbase}-standalone usr/share/desktop-directories/*
+    _pick ${_pkgbase}-standalone usr/share/icons/*
+    _pick ${_pkgbase}-vst usr/lib/vst/*
+  )
+}
+
+package_liblsp-r3d-glx-lib-git() {
+  pkgdesc="GLX-based 3D backend library for rendering scenes"
+  depends=(
+    gcc-libs
+    glibc
+    libglvnd libGL.so
+    libx11
+  )
+
+  mv -v liblsp-r3d-glx-lib/* "$pkgdir"
+}
+
+package_lsp-plugins-clap-git() {
+  pkgdesc+=" - CLAP"
+  groups=(clap-plugins)
+  depends=(
+    cairo
+    clap-host
+    gcc-libs
+    glibc
+    hicolor-icon-theme
+    libglvnd
+    liblsp-r3d-glx-lib=$pkgver
+    libsndfile libsndfile.so
+    libx11
+    libxrandr
+  )
+
+  mv -v lsp-plugins-clap/* "$pkgdir"
+}
+
+package_lsp-plugins-docs-git() {
+  pkgdesc+=" (documentation)"
+
+  mv -v lsp-plugins-docs/* "$pkgdir"
+}
+
+package_lsp-plugins-ladspa-git() {
+  pkgdesc+=" - LADSPA"
+  groups=(ladspa-plugins)
+  depends=(
+    cairo
+    gcc-libs
+    glibc
+    hicolor-icon-theme
+    ladspa-host
+    libglvnd
+    liblsp-r3d-glx-lib=$pkgver
+    libsndfile libsndfile.so
+    libx11
+    libxrandr
+  )
+
+  mv -v lsp-plugins-ladspa/* "$pkgdir"
+}
+
+package_lsp-plugins-lv2-git() {
+  pkgdesc+=" - LV2"
+  groups=(lv2-plugins)
+  depends=(
+    cairo
+    gcc-libs
+    glibc
+    hicolor-icon-theme
+    lv2-host
+    libglvnd
+    liblsp-r3d-glx-lib=$pkgver
+    libsndfile libsndfile.so
+    libx11
+    libxrandr
+  )
+
+  mv -v lsp-plugins-lv2/* "$pkgdir"
+}
+
+package_lsp-plugins-standalone-git() {
+  pkgdesc+=" - JACK standalone"
+  groups=(pro-audio)
+  depends=(
+    cairo
+    gcc-libs
+    glibc
+    hicolor-icon-theme
+    jack libjack.so
+    libglvnd
+    liblsp-r3d-glx-lib=$pkgver
+    libsndfile libsndfile.so
+    libx11
+    libxrandr
+  )
+
+  mv -v lsp-plugins-standalone/* "$pkgdir"
+}
+
+package_lsp-plugins-vst-git() {
+  pkgdesc+=" - VST2"
+  groups=(vst-plugins)
+  depends=(
+    cairo
+    gcc-libs
+    glibc
+    hicolor-icon-theme
+    libglvnd
+    liblsp-r3d-glx-lib=$pkgver
+    libsndfile libsndfile.so
+    libx11
+    libxrandr
+    vst-host
+  )
+
+  mv -v lsp-plugins-vst/* "$pkgdir"
+}

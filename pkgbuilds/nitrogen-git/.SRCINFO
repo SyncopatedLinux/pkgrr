@@ -1,0 +1,19 @@
+pkgbase = nitrogen-git
+	pkgdesc = Background browser and setter for X windows - git version
+	pkgver = 1.6.1r344.5fe0018
+	pkgrel = 2
+	url = https://github.com/l3ib/nitrogen
+	arch = i686
+	arch = x86_64
+	arch = x86_64_v3
+	license = GPL
+	makedepends = git
+	depends = gtkmm
+	depends = hicolor-icon-theme
+	depends = librsvg
+	replaces = nitrogen
+	options = !emptydirs
+	source = nitrogen::git+https://github.com/l3ib/nitrogen.git
+	md5sums = SKIP
+
+pkgname = nitrogen-git

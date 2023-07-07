@@ -1,0 +1,119 @@
+# Maintainer: Robert Pannick <rwpannick@gmail.com>
+# Contributor: David Runge <dvzrv@archlinux.org>
+
+_pkgname=ambix
+pkgname=ambix-o3
+pkgver=0.3.0
+pkgrel=1
+pkgdesc="3rd Order Ambix Standalone and VST Plug-ins"
+arch=('x86_64' 'x86_64_v3')
+url="https://github.com/kronihias/ambix"
+license=('GPL2')
+provides=('ambix-o3')
+conflicts=('ambix')
+groups=('lv2-plugins' 'pro-audio' 'vst-plugins')
+depends=('gcc-libs' 'glibc' 'libglvnd' 'libsoxr' 'libx11' 'libxext')
+makedepends=('alsa-lib' 'cmake' 'eigen' 'fftw' 'freetype2' 'freeglut' 'gendesk'
+'glu' 'libxcursor' 'libxinerama' 'jack' 'liblo' 'zita-convolver' 'vst2sdk' 'vst3sdk' 'git' 'webkit2gtk-4.1' 'webkit2gtk')
+checkdepends=('lv2lint')
+optdepends=('jack: for standalone applications'
+            'lv2-host: for LV2 plugins'
+            'vst-host: for VST plugins')
+source=("git+https://github.com/kronihias/ambix.git")
+
+sha256sums=('SKIP')
+
+_plugin_names=('ambix_binaural' 'ambix_converter' 'ambix_decoder'
+'ambix_directional_loudness' 'ambix_encoder_i2' 'ambix_encoder_i4'
+'ambix_encoder_i6' 'ambix_encoder_i8' 'ambix_encoder' 'ambix_maxre'
+'ambix_mirror' 'ambix_rotator' 'ambix_rotator_z' 'ambix_vmic' 'ambix_warp'
+'ambix_widening')
+
+_standalone_names=('ambix_binaural' 'ambix_converter' 'ambix_decoder'
+'ambix_directional_loudness' 'ambix_encoder' 'ambix_mirror' 'ambix_rotator'
+'ambix_vmic')
+
+prepare() {
+  cd "${_pkgname}"
+  # setting proper LV2 URIs:
+  # https://github.com/kronihias/ambix/issues/27
+  # patch -Np1 -i "../${_pkgname}-0.2.10-lv2_plugin_uri.patch"
+  # fix for gcc >= 9.1.0
+  # https://github.com/kronihias/ambix/issues/26
+  # patch -Np1 -i "../${_pkgname}-0.2.10-gcc9.1.0.patch"
+
+  declare -A _descriptions=(
+    ['ambix_binaural']="Listen to Ambisonics with Headphones"
+    ['ambix_converter']="Convert between Ambisonics Formats"
+    ['ambix_decoder']="Playback Ambisonics with Loudspeakers"
+    ['ambix_directional_loudness']="Amplify, Attenuate or Filter Out Certain Parts of the Spherical Soundfield"
+    ['ambix_encoder']="Encode Audio for Ambisonics"
+    ['ambix_mirror']="Adjust Symmetric Components in Ambisonics Streams"
+    ['ambix_rotator']="Rotate Sounds for Ambisonics"
+    ['ambix_vmic']="Virtual Microphone: Select part of the Soundfield"
+  )
+  declare -A _generic=(
+    ['ambix_binaural']="Binaural Decoder"
+    ['ambix_converter']="Ambisonics Formats Converter"
+    ['ambix_decoder']="Single-band Decoded Ambisonics"
+    ['ambix_directional_loudness']="Spherical Soundfield Amplifier"
+    ['ambix_encoder']="Ambisonics Panning"
+    ['ambix_mirror']="Soundfield Mirroring"
+    ['ambix_rotator']="Ambisonics Sounds Rotator"
+    ['ambix_vmic']="Ambisonics Virtual Microphone"
+  )
+
+  #TODO: fix desktop file names
+  for _standalone in ${_standalone_names[@]}; do
+    gendesk -f -n \
+            --pkgname "${_standalone}_o3" \
+            --name "${_standalone}_o3" \
+            --pkgdesc "${_description[${_standalone}]}_o3" \
+            --genericname "${_generic[${_standalone}]}" \
+            --icon "ambix" \
+            --categories "AudioVideo;Audio,Ambisonics"
+  done
+
+  git submodule init
+  git submodule update
+
+}
+
+build() {
+  cd "${_pkgname}"
+  cmake -DCMAKE_INSTALL_PREFIX=/usr \
+        -DVST2SDKPATH='/usr/include/vst36' \
+        -DCMAKE_BUILD_TYPE='Release' \
+        -DBUILD_LV2=OFF \
+        -DBUILD_VST=ON \
+        -DBUILD_STANDALONE=ON \
+        -DAMBI_ORDER=3 \
+        -DWITH_ZITA_CONVOLVER=ON \
+        -W no-dev \
+        -B build \
+        -S .
+
+  make VERBOSE=1 -C build
+
+package() {
+  depends+=('libasound.so' 'libfftw3f.so' 'libfftw3f_threads.so'
+  'libfreetype.so' 'libzita-convolver.so')
+
+  cd "${_pkgname}"
+
+  # install standalone applications
+  for _standalone in ${_standalone_names[@]}; do
+    install -vDm 755 "build/_bin/standalone/${_standalone}_standalone_o3" \
+      "${pkgdir}/usr/bin/${_standalone}_o3"
+  done
+
+  # install vst2 plugins
+  for _plugin in ${_plugin_names[@]}; do
+    install -vDm 755 "build/_bin/vst/${_plugin}_o3.so" \
+      "${pkgdir}/usr/lib/vst/${_plugin}_o3.so"
+  done
+
+  # XDG desktop integration
+  install -vDm 644 *".desktop" \
+    -t "${pkgdir}/usr/share/applications/"
+}

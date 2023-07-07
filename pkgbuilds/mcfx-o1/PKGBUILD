@@ -1,0 +1,105 @@
+# Maintainer: Robert Pannick <rwpannick@gmail.com>
+
+_pkgname=mcfx
+pkgname=mcfx-o1
+pkgver=0.6.0
+pkgrel=1
+pkgdesc="FOA Ambix Plug-in Suite"
+arch=('x86_64' 'x86_64_v3')
+url="https://github.com/kronihias/mcfx"
+license=('GPL2')
+groups=('pro-audio' 'vst-plugins')
+depends=('gcc-libs' 'glibc' 'libglvnd' 'libsoxr' 'libx11' 'libxext')
+makedepends=('alsa-lib' 'cmake' 'eigen' 'fftw' 'freetype2' 'freeglut' 'gendesk'
+'glu' 'libxcursor' 'libxinerama' 'jack2' 'liblo' 'zita-convolver' 'vst3sdk' 'vst2sdk' 'gtk3' 'webkit2gtk' 'git')
+optdepends=('jack: for standalone applications'
+            'vst-host: for VST plugins')
+provides=('mcfx-o1')
+source=("${_pkgname}-${pkgver}.tar.gz::https://github.com/kronihias/${_pkgname}/archive/v${pkgver}.tar.gz"
+        "http://www.matthiaskronlachner.com/download/mcfx/mcfx_convolver_presets_v0.1.zip")
+sha256sums=('328ca92991b89dac83f731f25b488384fd2aaa8bb230464ee71a7e23b62288cc'
+            'db14e670fc22808ecd797a22a7aff222ae1dfe50ae2c2c58ff51d40cafb05df8')
+install=$pkgname.install
+
+_plugin_names=('mcfx_convolver' 'mcfx_delay' 'mcfx_filter'
+'mcfx_gain_delay' 'mcfx_meter')
+
+_standalone_names=('mcfx_convolver' 'mcfx_delay' 'mcfx_filter'
+'mcfx_gain_delay' 'mcfx_meter')
+
+prepare() {
+  cd "${_pkgname}-$pkgver"
+
+  declare -A _descriptions=(
+    ['mcfx_convolver']="Multichannel Convolution Matrix"
+    ['mcfx_delay']="Set different delay time and gain setting for each channel"
+    ['mcfx_filter']="Filter each channel with the same low/high cut, peak filter and high/low shelf filter settings"
+    ['mcfx_gain_delay']="Set different delay time and gain setting for each channel"
+    ['mcfx_meter']="Multichannel level meter with RMS, peak and peak hold"
+  )
+
+  declare -A _generic=(
+    ['mcfx_convolver']="Multichannel Convolution Matrix"
+    ['mcfx_delay']="Ambisonics Delay"
+    ['mcfx_filter']="Ambisonics Filter"
+    ['mcfx_gain_delay']="Ambisonics Gain Delay"
+    ['mcfx_meter']="Ambisonics Meter"
+  )
+
+  for _name in ${_standalone_names[@]}; do
+    gendesk -f -n \
+            --pkgname "${_name}_o1" \
+            --name "${_name}_o1" \
+            --pkgdesc "${_description[${_name}]}_o1" \
+            --genericname "${_generic[${_name}]}" \
+            --icon "mcfx" \
+            --categories "AudioVideo;Audio,Ambisonics"
+  done
+}
+
+build() {
+  cd "${_pkgname}-$pkgver"
+
+  cmake -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_BUILD_TYPE='Release' \
+        -DVSTSDK_PATH='/usr/include/vst36' \
+        -DNUM_CHANNELS=4 \
+        -DWITH_ZITA_CONVOLVER=ON \
+        -DOpenGL_GL_PREFERENCE=GLVND \
+        -W no-dev \
+        -B build_o1 \
+        -S .
+  make VERBOSE=1 -C build_o1
+
+}
+
+package() {
+  depends+=('libasound.so' 'libfftw3f.so' 'libfftw3f_threads.so'
+  'libfreetype.so' 'libzita-convolver.so')
+
+  cd "${_pkgname}-$pkgver"
+
+  # install standalone applications
+
+  for _standalone in ${_standalone_names[@]}; do
+    install -vDm 755 "build_o1/_bin/standalone/${_standalone}_standalone4" \
+      "${pkgdir}/usr/bin/${_standalone}_o1"
+  done
+
+
+  # install vst plugins
+  for _plugin in ${_plugin_names[@]}; do
+    install -vDm 755 "build_o1/_bin/${_plugin}4.so" \
+      "${pkgdir}/usr/lib/vst/${_plugin}_o1.so"
+  done
+
+  # XDG desktop integration
+  install -vDm 644 *".desktop" \
+    -t "${pkgdir}/usr/share/applications/"
+  install -vDm 644 {CONVOLVER_CONFIG_HOWTO.txt,README.md} -t "${pkgdir}/usr/share/doc/${_pkgname}"
+
+  # install mcfx convolver presets
+  install -dm755 "${pkgdir}/usr/share/mcfx/"
+  cp -r ../mcfx/* "${pkgdir}/usr/share/mcfx/"
+
+}

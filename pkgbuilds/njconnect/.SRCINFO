@@ -1,0 +1,16 @@
+pkgbase = njconnect
+	pkgdesc = Curses Jack connection manager
+	pkgver = 1.6
+	pkgrel = 1
+	url = https://sourceforge.net/projects/njconnect/
+	arch = x86_64
+	groups = pro-audio
+	license = GPL
+	makedepends = git
+	depends = jack2
+	optdepends = jack2-dbus
+	provides = njconnect
+	source = njconnect-1.6.tar.xz
+	sha256sums = f62ccadbae29129642a3317169058bbd1c3e3299195152426a618ba154726ddd
+
+pkgname = njconnect

@@ -1,0 +1,7 @@
+post_install() {
+	echo -e "\n"
+	echo "#####################################"
+	echo -e "\n"
+	echo "mcfx convolver presets can be found in '/usr/share/mcfx/convolver_presets'."
+    echo -e "\n"
+}

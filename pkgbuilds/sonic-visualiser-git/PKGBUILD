@@ -1,0 +1,56 @@
+# Maintainer: Robert Pannick <rwpannick@gmail.com>
+# Contributor: Teteros <teteros at teknik dot io>
+_pkgname=sonic-visualiser
+pkgname=sonic-visualiser-git
+pkgver=v4.5.1.r2.gcd403e4
+pkgrel=1
+pkgdesc="A viewer and analyser of music audio files."
+arch=('x86_64' 'x86_64_v3')
+url="https://code.soundsoftware.ac.uk/projects/sonic-visualiser"
+license=('GPL2')
+depends=('alsa-lib' 'bzip2' 'capnproto' 'fftw' 'gcc-libs' 'glibc' 'hicolor-icon-theme' 'libfishsound' 'libglvnd' 'libid3tag' 'liblo' 'liblrdf' 'libmad' 'liboggz' 'libpulse' 'libsamplerate' 'libsndfile' 'libx11' 'opusfile' 'portaudio' 'qt5-base' 'qt5-svg' 'rubberband' 'serd' 'sord' 'libsoxr')
+makedepends=('mercurial' 'git' 'mlton' 'vamp-plugin-sdk' 'ninja' 'meson' 'qt5-tools')
+provides=("${pkgname%-git}")
+conflicts=("${pkgname%}" "${pkgname%-hg}" "${pkgname%-hg}")
+source=("git+https://github.com/sonic-visualiser/$_pkgname")
+md5sums=('SKIP')
+
+build() {
+    cd "$_pkgname"
+    ./repoint install
+    meson setup build
+    meson configure -Dcpp_args="-march=native" -Dprefix="/usr" build/
+    ninja -C build/
+}
+
+package() {
+    cd "$_pkgname"
+    meson install --destdir="$pkgdir" -C build/
+
+    # vamp binaries
+    install -Dm755 build/vamp-plugin-load-checker "$pkgdir/usr/bin/vamp-plugin-load-checker"
+    install -Dm755 build/piper-vamp-simple-server "$pkgdir/usr/bin/piper-vamp-simple-server"
+
+    # desktop files
+    install -t "$pkgdir/usr/share/applications" -Dm644 *.desktop
+
+    # icons
+    for _s in 16 22 24 32 48 64 128; do
+        install -Dm644 icons/sv-${_s}x${_s}.png \
+            "$pkgdir/usr/share/icons/hicolor/${_s}x${_s}/apps/sv-icon.png"
+    done
+    install -Dm644 icons/sv-icon.svg \
+        "$pkgdir/usr/share/icons/hicolor/scalable/apps/sv-icon.svg"
+
+    # samples
+    install -t "$pkgdir/usr/share/$pkgname/samples" -Dm644 samples/*
+
+    # templates
+    install -t "$pkgdir/usr/share/$pkgname/templates" -Dm644 templates/*
+
+    # docs
+    install -Dm644 CHANGELOG "$pkgdir/usr/share/doc/$pkgname/CHANGELOG"
+    install -Dm644 CITATION "$pkgdir/usr/share/doc/$pkgname/CITATION"
+    install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
+    install -Dm644 README_OSC.md "$pkgdir/usr/share/doc/$pkgname/README_OSC.md"
+}

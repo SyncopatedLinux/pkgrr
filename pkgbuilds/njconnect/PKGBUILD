@@ -1,0 +1,27 @@
+# Maintainer: Robert Pannick <rwpannick@gmail.com>
+
+pkgname=njconnect
+pkgver=1.6
+pkgrel=1
+pkgdesc="Curses Jack connection manager"
+arch=('x86_64' 'x86_64_v3')
+url="https://sourceforge.net/projects/njconnect/"
+license=('GPL')
+groups=('pro-audio')
+depends=('jack2' 'ncurses')
+makedepends=('git')
+optdepends=('jack2-dbus')
+provides=('njconnect')
+source=("$pkgname-$pkgver.tar.xz")
+sha256sums=('f62ccadbae29129642a3317169058bbd1c3e3299195152426a618ba154726ddd')
+
+build() {
+	cd $pkgname-$pkgver
+	make
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make PREFIX="/usr" DESTDIR="$pkgdir/" install
+  install -vDm 644 README -t "$pkgdir/usr/share/doc/$_name/"
+}

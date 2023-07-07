@@ -1,0 +1,31 @@
+# Maintainer: Robert Pannick <rwpannick@gmail.com>
+
+_name=Catch2
+pkgname=catch2-3.0.1
+pkgver=3.0.1
+pkgrel=1
+pkgdesc="Modern, C++-native, header-only, test framework for unit-tests, TDD and BDD (v3.0.1)"
+arch=('x86_64' 'x86_64_v3')
+url="https://github.com/catchorg/Catch2/"
+license=('Boost')
+makedepends=('git' 'cmake' 'ninja')
+provides=("catch2")
+conflicts=('catch2' 'catch2v3' 'catch2-git')
+source=(v$pkgver.tar.gz::https://github.com/catchorg/${_name}/archive/refs/tags/v${pkgver}.tar.gz)
+sha256sums=('8c4173c68ae7da1b5b505194a0c2d6f1b2aef4ec1e3e7463bde451f26bbaf4e7')
+
+build() {
+  cd "${_name}-${pkgver}"
+  cmake -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS=ON \
+    -Wno-dev \
+    -G Ninja
+}
+
+package() {
+  cd "${_name}-${pkgver}"
+  DESTDIR="$pkgdir" ninja -C build install
+}

@@ -1,0 +1,16 @@
+---
+
+user:
+  name: b08x
+  group: b08x
+  uid: 1000
+  gid: 1000
+  home: /home/b08x
+  secondary_groups: "input,video,audio,wheel"
+  shell: /usr/bin/zsh
+  email: rwpannick@gmail.com
+  realname: Robert Pannick
+  gpg: 36A6ECD355DB42B296C0CEE2157CA2FC56ECC96A
+
+workspace: /home/b08x/Workspace
+pkgrr_home: "{{ workspace }}/syncopated/pkgrr"

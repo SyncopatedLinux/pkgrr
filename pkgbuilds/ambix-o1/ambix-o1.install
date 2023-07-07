@@ -1,0 +1,7 @@
+post_install() {
+	echo -e "\n"
+	echo "#####################################"
+	echo -e "\n"
+	echo "ambix Binaural presets can be found in '/usr/share/ambix/binaural_presets'."
+    echo -e "\n"
+}

@@ -1,0 +1,17 @@
+pkgbase = crossguid
+	pkgdesc = a minimal, cross platform, C++ GUID library
+	pkgver = 0.2.2.r52.gca1bf4b
+	pkgrel = 1
+	url = https://github.com/graeme-hill/crossguid
+	arch = x86_64
+	license = MIT
+	makedepends = cpio
+	makedepends = git
+	makedepends = cmake
+	makedepends = ninja
+	provides = crossguid
+	conflicts = libcrossguid
+	source = crossguid.tar.gz
+	sha256sums = ef87ae1a8e66d490c09f9027fb5a9432b247e11443d00a8af4675878f28e105a
+
+pkgname = crossguid

@@ -1,0 +1,17 @@
+pkgbase = raul
+	pkgdesc = C++ Realtime Audio Utility Library
+	pkgver = 2.0.0
+	pkgrel = 1
+	url = https://drobilla.net/software/raul/
+	arch = x86_64
+	arch = x86_64_v3
+	license = GPL2
+	makedepends = git
+	makedepends = meson
+	makedepends = ninja
+	depends = glib2
+	depends = gcc-libs
+	source = raul-2.0.0.tar.gz::https://gitlab.com/drobilla/raul/-/archive/v2.0.0/raul-v2.0.0.tar.gz
+	sha256sums = 5d38a8c457724a1b36bd03d7eecfc0eaffe61c856d35514df37f764cfa496fc4
+
+pkgname = raul

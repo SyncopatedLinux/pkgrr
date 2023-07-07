@@ -1,0 +1,18 @@
+# Maintainer: Giuseppe Sellaroli <g.sellaroli  at  yahoo  dot  it>
+pkgname=scala-music-scales
+pkgver=90
+pkgrel=1
+pkgdesc='Collection of scales to be used with the Scala music software'
+url='http://www.huygens-fokker.org/scala/'
+arch=('any')
+depends=('scala-music')
+source=("${pkgname}.zip"::"http://www.huygens-fokker.org/docs/scales.zip")
+md5sums=('a31ae7a4048e8b58cf5e74a156a8eced')
+install=$pkgname.install
+
+
+package() {
+	install -dm755 "${pkgdir}/opt/scala/scl"
+
+	install -Dm 644 scl/*.scl -t "${pkgdir}/opt/scala/scl/"
+}

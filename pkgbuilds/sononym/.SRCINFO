@@ -1,0 +1,25 @@
+pkgbase = sononym
+	pkgdesc = Searchable Sound
+	pkgver = 1.4.2
+	pkgrel = 1
+	url = https://www.sononym.net/
+	arch = x86_64
+	groups = pro-audio
+	license = GPL
+	makedepends = git
+	depends = jack2
+	depends = pulseaudio
+	optdepends = jack2-dbus
+	optdepends = pulseaudio-jack
+	optdepends = pulseaudio-alsa
+	provides = sononym
+	source = sononym-1.4.2.tar.bz2::https://www.sononym.net/download/sononym-1.4.2.tar.bz2
+	source = sononym.desktop
+	source = sononym.png
+	source = sononym.sh
+	sha256sums = 08f08433c1bd2d26be15fcd5d31a7bac06e05f58a2f3c6f8847b135537bdbc23
+	sha256sums = 03b2092c185c865d3c737eba24737bd005a0ce3d1eb907b944db8210ce319ce7
+	sha256sums = 5707f6c3a2fcdc83bdaf059d0b33fc2104b9184b2e910a641ae9ee92664d40e6
+	sha256sums = 59037dc2d7f22e93ae827f58bc7ab65910e3761fd76bf9d365def334c8b690e9
+
+pkgname = sononym

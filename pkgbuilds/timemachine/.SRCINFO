@@ -1,0 +1,16 @@
+pkgbase = timemachine
+	pkgdesc = A JACK aplication that can retrospectively record audio.
+	pkgver = v0.3.4.r6.g6053ab0
+	pkgrel = 1
+	url = https://github.com/swh/timemachine.git
+	arch = x86_64
+	groups = pro-audio
+	license = GPL
+	makedepends = git
+	depends = jack2
+	optdepends = jack2-dbus
+	provides = timemachine
+	source = git+https://github.com/swh/timemachine.git
+	sha256sums = SKIP
+
+pkgname = timemachine

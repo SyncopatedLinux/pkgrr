@@ -1,0 +1,352 @@
+From 77a12032e41aeda4378180ff84eb11149a732f8f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?IOhannes=20m=20zm=C3=B6lnig?= <zmoelnig@iem.at>
+Date: Thu, 16 Dec 2021 14:49:46 +0100
+Subject: [PATCH] declare that plugins do not use FLAC/OggVorbis/MP3/lame/WMF
+
+so we don't need to link against ihose libraries
+---
+ AllRADecoder/CMakeLists.txt          | 5 +++++
+ BinauralDecoder/CMakeLists.txt       | 5 +++++
+ CoordinateConverter/CMakeLists.txt   | 5 +++++
+ DirectionalCompressor/CMakeLists.txt | 5 +++++
+ DirectivityShaper/CMakeLists.txt     | 5 +++++
+ DistanceCompensator/CMakeLists.txt   | 5 +++++
+ DualDelay/CMakeLists.txt             | 5 +++++
+ EnergyVisualizer/CMakeLists.txt      | 5 +++++
+ FdnReverb/CMakeLists.txt             | 5 +++++
+ MatrixMultiplier/CMakeLists.txt      | 5 +++++
+ MultiBandCompressor/CMakeLists.txt   | 5 +++++
+ MultiEQ/CMakeLists.txt               | 5 +++++
+ MultiEncoder/CMakeLists.txt          | 5 +++++
+ OmniCompressor/CMakeLists.txt        | 5 +++++
+ ProbeDecoder/CMakeLists.txt          | 5 +++++
+ RoomEncoder/CMakeLists.txt           | 5 +++++
+ SceneRotator/CMakeLists.txt          | 5 +++++
+ SimpleDecoder/CMakeLists.txt         | 5 +++++
+ StereoEncoder/CMakeLists.txt         | 5 +++++
+ ToolBox/CMakeLists.txt               | 5 +++++
+ 20 files changed, 100 insertions(+)
+
+diff --git a/AllRADecoder/CMakeLists.txt b/AllRADecoder/CMakeLists.txt
+index 7c560337..cfbf84c3 100644
+--- a/AllRADecoder/CMakeLists.txt
++++ b/AllRADecoder/CMakeLists.txt
+@@ -42,6 +42,11 @@ target_compile_definitions (AllRADecoder PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+diff --git a/BinauralDecoder/CMakeLists.txt b/BinauralDecoder/CMakeLists.txt
+index 2b766f3e..e5908278 100644
+--- a/BinauralDecoder/CMakeLists.txt
++++ b/BinauralDecoder/CMakeLists.txt
+@@ -32,6 +32,11 @@ target_compile_definitions (BinauralDecoder PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+diff --git a/CoordinateConverter/CMakeLists.txt b/CoordinateConverter/CMakeLists.txt
+index 7de49ba0..a908f3b7 100644
+--- a/CoordinateConverter/CMakeLists.txt
++++ b/CoordinateConverter/CMakeLists.txt
+@@ -32,6 +32,11 @@ target_compile_definitions (CoordinateConverter PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+diff --git a/DirectionalCompressor/CMakeLists.txt b/DirectionalCompressor/CMakeLists.txt
+index 03011013..27a86456 100644
+--- a/DirectionalCompressor/CMakeLists.txt
++++ b/DirectionalCompressor/CMakeLists.txt
+@@ -32,6 +32,11 @@ target_compile_definitions (DirectionalCompressor PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+diff --git a/DirectivityShaper/CMakeLists.txt b/DirectivityShaper/CMakeLists.txt
+index b8f0fabb..c0744709 100644
+--- a/DirectivityShaper/CMakeLists.txt
++++ b/DirectivityShaper/CMakeLists.txt
+@@ -32,6 +32,11 @@ target_compile_definitions (DirectivityShaper PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+diff --git a/DistanceCompensator/CMakeLists.txt b/DistanceCompensator/CMakeLists.txt
+index 8b4ab970..5570b6de 100644
+--- a/DistanceCompensator/CMakeLists.txt
++++ b/DistanceCompensator/CMakeLists.txt
+@@ -32,6 +32,11 @@ target_compile_definitions (DistanceCompensator PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+diff --git a/DualDelay/CMakeLists.txt b/DualDelay/CMakeLists.txt
+index 281ce453..4cb415f3 100644
+--- a/DualDelay/CMakeLists.txt
++++ b/DualDelay/CMakeLists.txt
+@@ -32,6 +32,11 @@ target_compile_definitions (DualDelay PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+diff --git a/EnergyVisualizer/CMakeLists.txt b/EnergyVisualizer/CMakeLists.txt
+index 806ebd19..11d5d309 100644
+--- a/EnergyVisualizer/CMakeLists.txt
++++ b/EnergyVisualizer/CMakeLists.txt
+@@ -32,6 +32,11 @@ target_compile_definitions (EnergyVisualizer PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+diff --git a/FdnReverb/CMakeLists.txt b/FdnReverb/CMakeLists.txt
+index fc2609a6..d04f6eae 100644
+--- a/FdnReverb/CMakeLists.txt
++++ b/FdnReverb/CMakeLists.txt
+@@ -32,6 +32,11 @@ target_compile_definitions (FdnReverb PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+diff --git a/MatrixMultiplier/CMakeLists.txt b/MatrixMultiplier/CMakeLists.txt
+index d056193d..90ab31c5 100644
+--- a/MatrixMultiplier/CMakeLists.txt
++++ b/MatrixMultiplier/CMakeLists.txt
+@@ -32,6 +32,11 @@ target_compile_definitions (MatrixMultiplier PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+diff --git a/MultiBandCompressor/CMakeLists.txt b/MultiBandCompressor/CMakeLists.txt
+index f44d85f9..95adb389 100644
+--- a/MultiBandCompressor/CMakeLists.txt
++++ b/MultiBandCompressor/CMakeLists.txt
+@@ -32,6 +32,11 @@ target_compile_definitions (MultiBandCompressor PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+diff --git a/MultiEQ/CMakeLists.txt b/MultiEQ/CMakeLists.txt
+index 6438a905..c6a28193 100644
+--- a/MultiEQ/CMakeLists.txt
++++ b/MultiEQ/CMakeLists.txt
+@@ -32,6 +32,11 @@ target_compile_definitions(MultiEQ PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+diff --git a/MultiEncoder/CMakeLists.txt b/MultiEncoder/CMakeLists.txt
+index 9c49a4ca..a58d84b6 100644
+--- a/MultiEncoder/CMakeLists.txt
++++ b/MultiEncoder/CMakeLists.txt
+@@ -32,6 +32,11 @@ target_compile_definitions(MultiEncoder PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+diff --git a/OmniCompressor/CMakeLists.txt b/OmniCompressor/CMakeLists.txt
+index e532f3f6..cf74f976 100644
+--- a/OmniCompressor/CMakeLists.txt
++++ b/OmniCompressor/CMakeLists.txt
+@@ -33,6 +33,11 @@ target_compile_definitions(OmniCompressor PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+diff --git a/ProbeDecoder/CMakeLists.txt b/ProbeDecoder/CMakeLists.txt
+index 0107b52b..77284110 100644
+--- a/ProbeDecoder/CMakeLists.txt
++++ b/ProbeDecoder/CMakeLists.txt
+@@ -32,6 +32,11 @@ target_compile_definitions(ProbeDecoder PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+diff --git a/RoomEncoder/CMakeLists.txt b/RoomEncoder/CMakeLists.txt
+index 5efe31a1..ffc7c6f7 100644
+--- a/RoomEncoder/CMakeLists.txt
++++ b/RoomEncoder/CMakeLists.txt
+@@ -33,6 +33,11 @@ target_compile_definitions(RoomEncoder PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+diff --git a/SceneRotator/CMakeLists.txt b/SceneRotator/CMakeLists.txt
+index 38b17514..25fd42c9 100644
+--- a/SceneRotator/CMakeLists.txt
++++ b/SceneRotator/CMakeLists.txt
+@@ -32,6 +32,11 @@ target_compile_definitions(SceneRotator PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+diff --git a/SimpleDecoder/CMakeLists.txt b/SimpleDecoder/CMakeLists.txt
+index a476c6ae..2fbbb17b 100644
+--- a/SimpleDecoder/CMakeLists.txt
++++ b/SimpleDecoder/CMakeLists.txt
+@@ -33,6 +33,11 @@ target_compile_definitions(SimpleDecoder PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+diff --git a/StereoEncoder/CMakeLists.txt b/StereoEncoder/CMakeLists.txt
+index 46830dae..b07c57d6 100644
+--- a/StereoEncoder/CMakeLists.txt
++++ b/StereoEncoder/CMakeLists.txt
+@@ -32,6 +32,11 @@ target_compile_definitions (StereoEncoder PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+diff --git a/ToolBox/CMakeLists.txt b/ToolBox/CMakeLists.txt
+index fe129d17..cec0c56e 100644
+--- a/ToolBox/CMakeLists.txt
++++ b/ToolBox/CMakeLists.txt
+@@ -32,6 +32,11 @@ target_compile_definitions(ToolBox PRIVATE
+     JUCE_USE_CURL=0
+     JUCE_WEB_BROWSER=0
+     JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=1
++    JUCE_USE_FLAC=0
++    JUCE_USE_OGGVORBIS=0
++    JUCE_USE_MP3AUDIOFORMAT=0
++    JUCE_USE_LAME_AUDIO_FORMAT=0
++    JUCE_USE_WINDOWS_MEDIA_FORMAT=0
+     JUCE_DISPLAY_SPLASH_SCREEN=0
+     JUCE_VST3_CAN_REPLACE_VST2=0)
+ 
+-- 
+GitLab
+

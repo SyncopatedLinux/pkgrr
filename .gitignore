@@ -1,0 +1,12 @@
+devtools/makepkg-x86_64.conf
+devtools/makepkg-x86_64_v3.conf
+devtools/pacman-x86_64_v3.conf
+devtools/pacman-x86_64.conf
+.latest-build
+monitor_log
+push.sh
+pkgdesc
+*.sig
+*.log
+*.zst
+sononym-1.4.2.tar.bz2

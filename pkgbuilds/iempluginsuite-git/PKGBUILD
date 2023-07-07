@@ -1,0 +1,165 @@
+# Maintainer: Robert Pannick <rwpannick@gmail.com>
+# Contributor: David Runge <dvzrv@archlinux.org>
+
+_name=IEMPluginSuite
+_pkgname=iempluginsuite
+pkgname=iempluginsuite-git
+pkgver=v1.14.1.r0.g5be3f97
+pkgrel=1
+pkgdesc="Plug-in suite including Ambisonic plug-ins up to 7th order"
+arch=('x86_64' 'x86_64_v3')
+url="https://plugins.iem.at"
+license=(GPL3)
+groups=(pro-audio vst3-plugins)
+depends=('gcc-libs' 'glibc' 'libglvnd' 'libpng' 'libx11' 'libxcursor' 'libxext' 'libxinerama'
+'libxrandr' 'zlib')
+makedepends=('git' 'alsa-lib' 'cmake' 'curl' 'fftw' 'freetype2' 'gendesk' 'jack2' 'juce' 'libjpeg-turbo'
+'xorg-server-xvfb' 'webkit2gtk-4.1')
+provides=('iempluginsuite-git')
+conflicts=('iempluginsuite')
+source=(
+  "git+https://git.iem.at/audioplugins/IEMPluginSuite.git"
+  "${_name}.png"
+  "${_pkgname}.directory"
+  "${_pkgname}.menu"
+)
+sha512sums=('SKIP'
+            'b986eefcdc61df9be8ff0852bc1f55d2804799951d44735ddecabfc683d01be8aac04af4686fcd917cf2097074d0c7a022f68a314b4c9a22139f1821b5ef52c1'
+            '1515011612f23f045d0b1ffdddb2d3ed50f6d4c79f408daac2371114c7f61af99f7f6fa8ec760b434b1651ff76f7266cc6daef5938bd306566d9d857ab9b8e29'
+            '2d290b5b8c9320013abb97e0a9051c6687a92700433454c88d4c89fe122c9b1537e128faf7060715c63eb28e93ad9f3f1a98765a7a5934e4f8bd0a8c20254ab3')
+b2sums=('SKIP'
+        '6d57ade4b6454b39d3eb6f00022fbd89c6e82952959577b185f9ab24960ccc3de322de55dbafe418bb440a2348fc7013bcf0eeec14ae13bd6cc56b61075458c3'
+        '27f33729c0100b866eafc76e51d9085686a94aad055ee75cdee13a02e1a6c1abeb897dcf00d36ccbce38da5ea0ee430d853c0468e97c21552d4c86d985b32512'
+        '1ea251abb358de7675012b9c9bc6a7187c4c171267f4466437e1d324c1a19ed6e8f5b2eeb625093cfa0303ea534f9d4cd900966338b18126a09a41b6a3939dfc')
+
+_names=(
+  AllRADecoder
+  BinauralDecoder
+  CoordinateConverter
+  DirectionalCompressor
+  DirectivityShaper
+  DistanceCompensator
+  DualDelay
+  EnergyVisualizer
+  FdnReverb
+  GranularEncoder
+  MatrixMultiplier
+  MultiBandCompressor
+  MultiEQ
+  MultiEncoder
+  OmniCompressor
+  ProbeDecoder
+  RoomEncoder
+  SceneRotator
+  SimpleDecoder
+  StereoEncoder
+  ToolBox
+)
+
+prepare() {
+  local name
+
+  declare -A comments=(
+    ['AllRADecoder']="Design an Ambisonic decoder for an arbitrary loudspeaker layout using the AllRAD approach."
+    ['BinauralDecoder']="Renders the Ambisonic input signal to a binaural headphone signal using the MagLS approach."
+    ['CoordinateConverter']="Converts VST parameters from a spherical representation to a cartesian, and vice versa."
+    ['DirectionalCompressor']="A more sophisticated Ambisonic compressor/limiter which lets you control the dynamics for different spatial regions."
+    ['DirectivityShaper']="Filter input signal into four independent bands, to which different directivity patterns can be applied to."
+    ['DistanceCompensator']="Calculate the needed delays and gains in order to compensate for distance differences."
+    ['DualDelay']="Two delay-lines, which can be configured independently."
+    ['EnergyVisualizer']="Visualizes the energy distribution on the sphere of the Ambisonic input signal using a Hammer-Aitoff projection (a spherical projection which is area-preserving)"
+    ['FdnReverb']="A Feedback-Delay-Network reverberation."
+    ['GranularEncoder']="An Ambisonic granular synthesis plug-in"
+    ['MatrixMultiplier']="Load a configuration which contains a TransformationMatrix object which will be applied to the input signal."
+    ['MultiBandCompressor']="Splits an Ambisonic signal into four bands and compresses them individually."
+    ['MultiEQ']="A simple multi-channel equalizer, filtering up to 64 audio channels."
+    ['MultiEncoder']="Encode multiple sources with just one plug-in."
+    ['OmniCompressor']="An Ambisonic compressor which can also be used as a limiter."
+    ['ProbeDecoder']="A little tool to sample/decode the Ambisonic input signal for one specific direction and listen to the output."
+    ['RoomEncoder']="Puts a source and a listener into a virtual shoebox-shaped room and renders over 200 wall reflections."
+    ['SceneRotator']="An Ambisonic rotator plug-in, which rotates the Ambisonic scene."
+    ['SimpleDecoder']="Reads JSON configuration files and decodes the Ambisonic input signal to loudspeaker signals."
+    ['StereoEncoder']="Encodes mono or stereo audio signals into the Ambisonic domain."
+    ['ToolBox']="Flips the Ambisonic input signal along the x, y and/or z axis."
+  )
+  declare -A generic=(
+    ['AllRADecoder']="Ambisonic Decoder Designer"
+    ['BinauralDecoder']="Binaural Decoder"
+    ['CoordinateConverter']="VST Coordinate Converter"
+    ['DirectionalCompressor']="Compressor Limiter"
+    ['DirectivityShaper']="Directivity Shaper"
+    ['DistanceCompensator']="Distance Compensation"
+    ['DualDelay']="Delay"
+    ['EnergyVisualizer']="Audio Visualizer"
+    ['FdnReverb']="Reverb"
+    ['GranularEncoder']="Ambisonic Synthesizer"
+    ['MatrixMultiplier']="Matrix Transformation"
+    ['MultiBandCompressor']="Multiband Compressor"
+    ['MultiEQ']="Multichannel Equalizer"
+    ['MultiEncoder']="Ambisonics Encoder"
+    ['OmniCompressor']="Ambisonic Limiter Compressor"
+    ['ProbeDecoder']="Ambisonic Decoder"
+    ['RoomEncoder']="Room Encoder"
+    ['SceneRotator']="Ambisonic Scene Rotator"
+    ['SimpleDecoder']="Ambisonic Decoder"
+    ['StereoEncoder']="Ambisonic Encoder"
+    ['ToolBox']="Ambisonic Transformation"
+  )
+  for name in "${_names[@]}"; do
+    gendesk -n \
+            --pkgname at.iem.plugins.$name \
+            --name $name \
+            --exec $name \
+            --icon $_name \
+            --pkgdesc "${comments[$name]}" \
+            --genericname "${generic[$name]}" \
+            --categories $_name,Ambisonics
+  done
+
+  cd "${_name}"
+
+  git submodule init
+  git submodule update
+
+}
+
+build() {
+  cd "${_name}"
+
+  cmake \
+    -B build \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DIEM_BUILD_STANDALONE=ON \
+    -DIEM_USE_SYSTEM_JUCE=OFF \
+    -DIEM_BUILD_VST2=OFF \
+    -DIEM_BUILD_VST3=ON \
+    -Wno-dev
+
+  cmake --build build --config Release
+}
+
+package() {
+  local name
+
+  #==> WARNING: Library listed in 'depends' is not required by any files: libcurl.so
+  #==> WARNING: Library listed in 'depends' is not required by any files: libjack.so
+  #==> WARNING: Library listed in 'depends' is not required by any files: libjpeg.so
+
+  depends+=(libasound.so libcurl.so libfftw3f.so libfreetype.so libjack.so
+  libjpeg.so)
+
+  for name in "${_names[@]}"; do
+    install -vDm 755 "${_name}/build/$name/${name}_artefacts/Standalone/$name" -t "$pkgdir/usr/bin/"
+    install -vDm 755 "${_name}/build/$name/${name}_artefacts/VST3/$name.vst3/Contents/x86_64-linux/$name.so" -t "$pkgdir/usr/lib/vst3/$name.vst3/Contents/x86_64-linux/"
+  done
+
+  install -vDm 644 *.desktop -t "${pkgdir}/usr/share/applications/"
+
+  install -vDm 644 "${_name}/resources/Standalone/IEMPluginSuiteSmall.png" -t "$pkgdir/usr/share/icons/"
+  install -vDm 644 $_name.png -t "$pkgdir/usr/share/pixmaps/"
+
+  install -vDm 644 $_pkgname.menu -t "${pkgdir}/etc/xdg/menus/applications-merged/"
+  install -vDm 644 $_pkgname.directory -t "${pkgdir}/usr/share/desktop-directories/"
+
+  install -vDm 644 ${_name}/{ChangeLog,README}.md -t "${pkgdir}/usr/share/doc/${_name}/"
+}

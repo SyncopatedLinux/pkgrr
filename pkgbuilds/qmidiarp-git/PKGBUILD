@@ -1,0 +1,54 @@
+# Maintainer: milkii on freenode
+# Contributor: David Runge <dave@sleepmap.de>
+# Contributor: speps <speps at aur dot archlinux dot org>
+# Contributor: Shinlun Hsieh <yngwiexx@yahoo.com.tw>
+
+_name=qmidiarp
+pkgname=qmidiarp-git
+pkgver=0.7.0.r6.g110ad9d
+pkgrel=1
+pkgdesc="A MIDI arpeggiator, phrase generator and controller LFO for the ALSA sequencer."
+arch=('x86_64' 'x86_64_v3')
+url="https://sourceforge.net/projects/qmidiarp/"
+license=('GPL2')
+groups=('lv2-plugins' 'pro-audio')
+conflicts=('qmidiarp')
+provides=('qmidiarp')
+depends=('jack2' 'hicolor-icon-theme' 'liblo' 'qt5-base')
+makedepends=('git' 'lv2' 'qt5-tools')
+source=("${_name}::git://git.code.sf.net/p/qmidiarp/code")
+sha512sums=('SKIP')
+
+pkgver() {
+  cd "${_name}"
+  ( set -o pipefail
+    git describe --long 2>/dev/null | sed 's/\([^-]*-g\)/r\1/;s/-/./g' | sed 's/qmidiarp.//g' ||
+    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+  )
+}
+
+# send errors to /dev/null when running libtoolize or else:
+# error: '/usr/share/aclocal/lt~obsolete.m4' does not exist.
+build() {
+  cd "${_name}"
+  libtoolize -Wnone --quiet 2> /dev/null
+  aclocal
+  autoheader
+  autoconf
+  automake --add-missing
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${_name}"
+
+  make DESTDIR="${pkgdir}" install
+
+  libtool --finish ${pkgdir}/usr/lib/lv2/qmidiarp_seq.lv2
+  libtool --finish ${pkgdir}/usr/lib/lv2/qmidiarp_arp.lv2
+  libtool --finish ${pkgdir}/usr/lib/lv2/qmidiarp_lfo.lv2
+
+  install -vDm 644 {AUTHORS,ChangeLog,NEWS,README} \
+    -t "${pkgdir}/usr/share/doc/${pkgname}/"
+}

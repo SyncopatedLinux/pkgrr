@@ -1,0 +1,37 @@
+From f6bfeb08a626b8d7b6a20936145cf69f281e7ab4 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?IOhannes=20m=20zm=C3=B6lnig?= <zmoelnig@iem.at>
+Date: Thu, 16 Dec 2021 14:07:19 +0100
+Subject: [PATCH] Option to use existing JUCE instead of bundled one
+
+---
+ CMakeLists.txt | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8a1de9b9..88061ac7 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -37,6 +37,7 @@ set (PLUGINS_TO_BUILD
+ 
+ # The following options let you select the plug-ins formats you want to build.
+ # You can either change them here or use the command line to switch them on/off.
++option (IEM_USE_SYSTEM_JUCE "Use JUCE found via CMake rather than the bundled one." OFF)
+ option (IEM_BUILD_VST2 "Build VST2 version of the plug-ins." OFF)
+ option (IEM_BUILD_VST3 "Build VST3 version of the plug-ins." ON)
+ option (IEM_BUILD_STANDALONE "Build standalones of the plug-ins." OFF)
+@@ -72,7 +73,11 @@ elseif ((CMAKE_SYSTEM_NAME STREQUAL "Linux") OR (CMAKE_SYSTEM_NAME MATCHES ".*BS
+ endif()
+ 
+ # add JUCE dependency
+-add_subdirectory (JUCE)
++if (IEM_USE_SYSTEM_JUCE)
++    find_package(JUCE CONFIG REQUIRED)
++else()
++    add_subdirectory (JUCE)
++endif()
+ 
+ # formats
+ set (IEM_FORMATS "")
+-- 
+GitLab
+

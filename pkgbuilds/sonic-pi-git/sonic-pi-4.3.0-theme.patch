@@ -1,0 +1,263 @@
+diff --git a/app/gui/qt/SonicPi.qrc b/app/gui/qt/SonicPi.qrc
+index cd4ba1d27..5c91968c1 100644
+--- a/app/gui/qt/SonicPi.qrc
++++ b/app/gui/qt/SonicPi.qrc
+@@ -202,5 +202,10 @@
+         <file>fonts/Hack-Italic.ttf</file>
+         <file>fonts/Hack-Bold.ttf</file>
+         <file>fonts/Hack-BoldItalic.ttf</file>
++
++        <file>fonts/mononoki-Regular-Nerd-Font-Complete.ttf</file>
++        <file>fonts/mononoki-Italic-Nerd-Font-Complete.ttf</file>
++        <file>fonts/mononoki-Bold-Nerd-Font-Complete.ttf</file>
++        <file>fonts/mononoki-Bold-Italic-Nerd-Font-Complete.ttf</file>
+     </qresource>
+ </RCC>
+diff --git a/app/gui/qt/main.cpp b/app/gui/qt/main.cpp
+index 9d819f974..a9a114749 100644
+--- a/app/gui/qt/main.cpp
++++ b/app/gui/qt/main.cpp
+@@ -77,10 +77,10 @@ int main(int argc, char *argv[])
+ 
+   SingleApplication app(argc, argv);
+ 
+-  QFontDatabase::addApplicationFont(":/fonts/Hack-Regular.ttf");
+-  QFontDatabase::addApplicationFont(":/fonts/Hack-Italic.ttf");
+-  QFontDatabase::addApplicationFont(":/fonts/Hack-Bold.ttf");
+-  QFontDatabase::addApplicationFont(":/fonts/Hack-BoldItalic.ttf");
++  QFontDatabase::addApplicationFont(":/fonts/mononoki-Regular-Nerd-Font-Complete.ttf");
++  QFontDatabase::addApplicationFont(":/fonts/mononoki-Italic-Nerd-Font-Complete.ttf");
++  QFontDatabase::addApplicationFont(":/fonts/mononoki-Bold-Nerd-Font-Complete.ttf");
++  QFontDatabase::addApplicationFont(":/fonts/mononoki-Bold-Italic-Nerd-Font-Complete.ttf");
+ 
+   qRegisterMetaType<SonicPiLog::MultiMessage>("SonicPiLog::MultiMessage");
+ 
+diff --git a/app/gui/qt/mainwindow.cpp b/app/gui/qt/mainwindow.cpp
+index 7e696db8e..558987ed6 100644
+--- a/app/gui/qt/mainwindow.cpp
++++ b/app/gui/qt/mainwindow.cpp
+@@ -654,11 +654,11 @@ void MainWindow::setupWindowStructure()
+     addUniversalCopyShortcuts(errorPane);
+     outputPane->setReadOnly(true);
+     outputPane->setLineWrapMode(QPlainTextEdit::NoWrap);
+-    outputPane->setFontFamily("Hack");
++    outputPane->setFontFamily("mononoki Nerd Font");
+ 
+     incomingPane->setReadOnly(true);
+     incomingPane->setLineWrapMode(QPlainTextEdit::NoWrap);
+-    incomingPane->setFontFamily("Hack");
++    incomingPane->setFontFamily("mononoki Nerd Font");
+ 
+     errorPane->setReadOnly(true);
+ 
+diff --git a/app/gui/qt/model/sonicpitheme.cpp b/app/gui/qt/model/sonicpitheme.cpp
+index 83b4468d5..24c43c844 100644
+--- a/app/gui/qt/model/sonicpitheme.cpp
++++ b/app/gui/qt/model/sonicpitheme.cpp
+@@ -923,7 +923,7 @@ void SonicPiTheme::reloadStylesheet() {
+     QString selectionBackgroundColor = this->color("SelectionBackground").name();
+     QString errorBackgroundColor = this->color("ErrorBackground").name();
+ 
+-    appStyling.replace("fixedWidthFont", "\"Hack\"");
++    appStyling.replace("fixedWidthFont", "\"mononoki\"");
+ 
+     #if defined(Q_OS_LINUX)
+     appStyling = "QWidget\n{\nbackground: paneColor;\n}\n" + appStyling;
+diff --git a/app/gui/qt/theme/dark/doc-styles.css b/app/gui/qt/theme/dark/doc-styles.css
+index 704a7cd73..0f2735637 100644
+--- a/app/gui/qt/theme/dark/doc-styles.css
++++ b/app/gui/qt/theme/dark/doc-styles.css
+@@ -69,11 +69,11 @@ em {
+ 
+ 
+ pre {
+-    font-family: "Hack", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
++    font-family: "mononoki Nerd Font", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
+ }
+ 
+ code {
+-    font-family: "Hack", "Courier New","Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
++    font-family: "mononoki Nerd Font", "Courier New","Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
+ 
+     color: deeppink;
+ }
+@@ -129,7 +129,7 @@ h2 {
+ }
+ 
+ body.info {
+-    font-family: "Hack", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
++    font-family: "mononoki Nerd Font", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
+ }
+ 
+ body.info a {
+@@ -149,7 +149,7 @@ body.manual .introduced {
+ body.manual table.arguments td {
+     font-size: large;
+     padding: 2px;
+-    font-family: "Hack", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
++    font-family: "mononoki Nerd Font", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
+ }
+ 
+ body.manual table.arguments td.odd,
+@@ -169,7 +169,7 @@ body.manual table.details td {
+ }
+ 
+ body.manual table.details td.key {
+-    font-family: "Hack", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
++    font-family: "mononoki Nerd Font", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
+   font-size: x-large;
+ }
+ 
+diff --git a/app/gui/qt/theme/high_contrast/doc-styles.css b/app/gui/qt/theme/high_contrast/doc-styles.css
+index 1a4a90785..8dc3797f8 100644
+--- a/app/gui/qt/theme/high_contrast/doc-styles.css
++++ b/app/gui/qt/theme/high_contrast/doc-styles.css
+@@ -61,11 +61,11 @@ em {
+ }
+ 
+ pre {
+-    font-family: "Hack", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
++    font-family: "mononoki Nerd Font", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
+ }
+ 
+ code {
+-    font-family: "Hack", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
++    font-family: "mononoki Nerd Font", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
+     color: #99004A;
+ }
+ 
+@@ -120,7 +120,7 @@ h2 {
+ }
+ 
+ body.info {
+-    font-family: "Hack", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
++    font-family: "mononoki Nerd Font", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
+ }
+ 
+ body.info a {
+@@ -140,7 +140,7 @@ body.manual .introduced {
+ body.manual table.arguments td {
+     font-size: x-large;
+     padding: 2px;
+-    font-family: "Hack", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
++    font-family: "mononoki Nerd Font", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
+ }
+ 
+ body.manual table.arguments td.odd,
+@@ -160,7 +160,7 @@ body.manual table.details td {
+ }
+ 
+ body.manual table.details td.key {
+-    font-family: "Hack", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
++    font-family: "mononoki Nerd Font", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
+   font-size: x-large;
+ }
+ 
+diff --git a/app/gui/qt/theme/light/doc-styles.css b/app/gui/qt/theme/light/doc-styles.css
+index 6ad0d0a45..e6c5c0f98 100644
+--- a/app/gui/qt/theme/light/doc-styles.css
++++ b/app/gui/qt/theme/light/doc-styles.css
+@@ -59,11 +59,11 @@ em {
+ }
+ 
+ pre {
+-    font-family: "Hack", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
++    font-family: "mononoki Nerd Font", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
+ }
+ 
+ code {
+-    font-family: "Hack", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
++    font-family: "mononoki Nerd Font", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
+     color: deeppink;
+ }
+ 
+@@ -118,7 +118,7 @@ h2 {
+ }
+ 
+ body.info {
+-    font-family: "Hack", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
++    font-family: "mononoki Nerd Font", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
+ }
+ 
+ body.info a {
+@@ -138,7 +138,7 @@ body.manual .introduced {
+ body.manual table.arguments td {
+     font-size: large;
+     padding: 2px;
+-    font-family: "Hack", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
++    font-family: "mononoki Nerd Font", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
+ }
+ 
+ body.manual table.arguments td.odd,
+@@ -158,7 +158,7 @@ body.manual table.details td {
+ }
+ 
+ body.manual table.details td.key {
+-    font-family: "Hack", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
++    font-family: "mononoki Nerd Font", "Menlo", "Bitstream Vera Sans Mono", "DejaVu Sans Mono",  "Liberation Mono", "DroidSansMono", "Lucida Console", Consolas, Terminal, Monaco, "Courier New", monospace;
+   font-size: x-large;
+ }
+ 
+diff --git a/app/gui/qt/widgets/settingswidget.cpp b/app/gui/qt/widgets/settingswidget.cpp
+index c1c420980..53e0bc319 100644
+--- a/app/gui/qt/widgets/settingswidget.cpp
++++ b/app/gui/qt/widgets/settingswidget.cpp
+@@ -127,7 +127,7 @@ QGroupBox* SettingsWidget::createAudioPrefsTab() {
+     QGroupBox *hwInfoBox = new QGroupBox(tr("Audio Hardware Information"));
+     hwInfoBox->setToolTip(tr("Audio hardware configuration and information."));
+     scsynth_info_label = new QLabel(tr("Information unavailable."));
+-    scsynth_info_label->setFont(QFont("Hack"));
++    scsynth_info_label->setFont(QFont("mononoki Nerd Font"));
+     scsynth_info_label->setAccessibleName("scsynth-info");
+     QHBoxLayout *hw_info_box = new QHBoxLayout;
+     hw_info_box->addWidget(scsynth_info_label);
+@@ -240,8 +240,8 @@ QGroupBox* SettingsWidget::createIoPrefsTab() {
+ 
+     midi_in_ports_label = new QLabel;
+     midi_out_ports_label = new QLabel;
+-    midi_in_ports_label->setFont(QFont("Hack"));
+-    midi_out_ports_label->setFont(QFont("Hack"));
++    midi_in_ports_label->setFont(QFont("mononoki Nerd Font"));
++    midi_out_ports_label->setFont(QFont("mononoki Nerd Font"));
+     midi_in_ports_label->setAccessibleName("midi-in-ports-label");
+     midi_out_ports_label->setAccessibleName("midi-out-ports-label");
+     midi_in_ports_label->setText(tr("No connected input devices"));
+diff --git a/app/gui/qt/widgets/sonicpieditor.cpp b/app/gui/qt/widgets/sonicpieditor.cpp
+index 135052eaf..44ccfeafa 100644
+--- a/app/gui/qt/widgets/sonicpieditor.cpp
++++ b/app/gui/qt/widgets/sonicpieditor.cpp
+@@ -30,7 +30,7 @@ SonicPiEditor::SonicPiEditor(SonicPiScintilla *workspace, SonicPiTheme *theme, Q
+   m_context->setMaximumHeight(ScaleHeightForDPI(30));
+   m_context->setReadOnly(true);
+   m_context->setLineWrapMode(QPlainTextEdit::NoWrap);
+-  m_context->setFontFamily("Hack");
++  m_context->setFontFamily("mononoki Nerd Font");
+   m_context->setTextColor(QColor(m_theme->color("LogForeground")));
+   workspace_layout->addWidget(m_workspace);
+   workspace_layout->addWidget(m_context);
+diff --git a/app/gui/qt/widgets/sonicpilexer.cpp b/app/gui/qt/widgets/sonicpilexer.cpp
+index 8bb8e6fc0..6e0ccb908 100644
+--- a/app/gui/qt/widgets/sonicpilexer.cpp
++++ b/app/gui/qt/widgets/sonicpilexer.cpp
+@@ -22,7 +22,7 @@ SonicPiLexer::SonicPiLexer(SonicPiTheme *theme) : QsciLexerRuby() {
+     this->setDefaultPaper(theme->color("Background"));
+ }
+ 
+-static char default_font[] = "Hack";
++static char default_font[] = "mononoki Nerd Font";
+ 
+ // triggers autocompletion for the next word
+ QStringList SonicPiLexer::autoCompletionWordSeparators() const {
+diff --git a/app/gui/qt/widgets/sonicpiscintilla.cpp b/app/gui/qt/widgets/sonicpiscintilla.cpp
+index ac78a492c..2d54c8aeb 100644
+--- a/app/gui/qt/widgets/sonicpiscintilla.cpp
++++ b/app/gui/qt/widgets/sonicpiscintilla.cpp
+@@ -140,7 +140,7 @@ SonicPiScintilla::SonicPiScintilla(SonicPiLexer *lexer, SonicPiTheme *theme, QSt
+ 
+   setMarginsBackgroundColor(theme->color("MarginBackground"));
+   setMarginsForegroundColor(theme->color("MarginForeground"));
+-  setMarginsFont(QFont("Hack", 15, -1, true));
++  setMarginsFont(QFont("mononoki Nerd Font", 15, -1, true));
+   setUtf8(true);
+   setText("# Loading previous buffer contents. Please wait...");
+   setLexer((QsciLexer *)lexer);

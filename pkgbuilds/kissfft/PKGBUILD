@@ -1,0 +1,42 @@
+# Maintainer: Robert Pannick <rwpannick@gmail.com>
+
+_name=kissfft
+pkgname=kissfft
+pkgver=131.1.0
+pkgrel=1
+pkgdesc="A mixed-radix Fast Fourier Transform based up on the principle, 'Keep It Simple, Stupid.'"
+arch=(any)
+url='https://github.com/mborgerding/kissfft'
+license=(Unlicense)
+depends=('blas' 'libpng' 'fftw' 'python-numpy' 'openmp')
+makedepends=('cmake' 'ninja')
+source=($pkgname-$pkgver.tar.gz)
+sha256sums=('76c1aac87ddb7258f34b08a13f0eebf9e53afa299857568346aa5c82bcafaf1a')
+
+build() {
+  cd $pkgname-$pkgver
+  cmake -B build \
+   -DCMAKE_INSTALL_PREFIX=/usr \
+   -DCMAKE_INSTALL_LIBDIR=lib \
+   -DCMAKE_BUILD_TYPE=Release \
+   -DBUILD_SHARED_LIBS=ON \
+   -DKISSFFT_DATATYPE=float \
+   -DKISSFFT_OPENMP=OFF \
+   -DKISSFFT_PKGCONFIG=ON \
+   -DKISSFFT_STATIC=OFF \
+   -DKISSFFT_TEST=ON \
+   -DKISSFFT_TOOLS=ON \
+   -DKISSFFT_USE_ALLOCA=OFF \
+   -Wno-dev \
+   -G Ninja \
+
+}
+
+package() {
+  cd $pkgname-$pkgver
+
+  DESTDIR="$pkgdir" ninja -C build install
+
+  install -Dm644 CHANGELOG README.md TIPS COPYING \
+    -t "$pkgdir"/usr/share/doc/$pkgname
+}

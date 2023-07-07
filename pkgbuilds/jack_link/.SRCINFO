@@ -1,0 +1,21 @@
+pkgbase = jack_link-git
+	pkgdesc = JACK transport timebase bridge to Ableton Link
+	pkgver = v0.1.8.r0.g2065e45
+	pkgrel = 1
+	url = https://github.com/rncbc/jack_link.git
+	arch = x86_64
+	groups = pro-audio
+	license = GPL
+	makedepends = git
+	makedepends = asio
+	depends = jack2
+	depends = jack-example-tools
+	optdepends = jack2-dbus
+	provides = jack_link
+	provides = jack_link-git
+	conflicts = jack_link
+	conflicts = jack_link-git
+	source = git+https://github.com/rncbc/jack_link.git
+	sha256sums = SKIP
+
+pkgname = jack_link-git

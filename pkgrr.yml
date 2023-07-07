@@ -1,0 +1,104 @@
+---
+
+- name: setup build host
+  hosts: localhost
+  become: True
+  gather_subset:
+    - hardware
+    - network
+  vars:
+    path:
+      - "{{ lookup('env','HOME') }}/Workspace/syncopated/pkgrr/devtools"
+      - "{{ lookup('env','HOME') }}/.local/bin"
+      - "{{ lookup('env','HOME') }}/.cargo/bin"
+    admin_group: wheel
+    buildroot: "/mnt/chroots/arch"
+    repository_url: http://syncopated.hopto.org/packages/archlinux
+
+  vars_files:
+    - "vars/user.yml"
+
+  pre_tasks:
+
+    - block:
+        - name: check -march support
+          shell: /lib/ld-linux-x86-64.so.2 --help | grep supported|xargs|awk '{print $1}'
+          register: supported_march
+
+        - name: check output from grep command
+          debug:
+            msg: "{{ supported_march }}"
+
+        - name: set architecture
+          set_fact:
+            architecture: "x86-64-v3"
+          when: supported_march.stdout_lines[0] == 'x86-64-v3'
+
+        - name: set architecture
+          set_fact:
+            architecture: "x86-64"
+          when: supported_march.stdout_lines[0] == 'x86-64-v2'
+
+      ignore_errors: "{{ ansible_check_mode }}"
+      tags: ['flags']
+
+  tasks:
+
+    - name: install devtools and inotify-tools
+      pacman:
+        name: "{{ item }}"
+        state: present
+        force: yes
+        extra_args: --noconfirm
+      with_items:
+        - devtools
+        - inotify-tools
+      tags: [packages]
+
+    - block:
+        - name: ensure PKGDEST folder tree
+          file:
+            path: "{{ user.home }}/{{ item }}"
+            state: directory
+          with_items:
+            - Packages
+            - Packages/sources
+            - Packages/x86_64
+            - Packages/x86_64/srcpackages
+            - Packages/x86_64/makepkglogs
+            - Packages/x86_64_v3
+            - Packages/x86_64_v3/srcpackages
+            - Packages/x86_64_v3/makepkglogs
+            - Repository
+            - Repository/x86_64
+            - Repository/x86_64_v3
+
+        - name: fetch lfs files
+          shell: |
+            git lfs install && \
+            git lfs checkout && \
+            git lfs fetch && \
+            git lfs pull
+          args:
+            chdir: "{{ pkgrr_home }}"
+
+        - name: copy makepkg and pacman templates to workspace
+          template:
+            src: "devtools/{{ item }}.j2"
+            dest: "{{ pkgrr_home }}/devtools/{{ item }}"
+            mode: '0644'
+          with_items:
+            - makepkg-x86_64.conf
+            - makepkg-x86_64_v3.conf
+            - pacman-x86_64.conf
+            - pacman-x86_64_v3.conf
+
+        - name: add devtools to $PATH
+          lineinfile:
+            path: "{{ user.home }}/.profile"
+            regexp: "^export PATH"
+            line: "export PATH=$PATH:$HOME/Workspace/syncopated/pkgrr/devtools"
+
+
+      become_user: "{{ user.name }}"
+      tags: ['devtools', 'pkgbuilds']

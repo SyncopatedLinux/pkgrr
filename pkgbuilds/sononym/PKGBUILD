@@ -1,0 +1,43 @@
+# Maintainer: Robert Pannick <rwpannick@gmail.com>
+pkgname=sononym
+pkgver=1.4.2
+pkgrel=2
+pkgdesc="Searchable Sound"
+arch=('x86_64' 'x86_64_v3')
+url="https://www.sononym.net/"
+license=('GPL')
+groups=('pro-audio')
+depends=('jack2' 'pulseaudio')
+makedepends=('git')
+optdepends=('jack2-dbus' 'pulseaudio-jack' 'pulseaudio-alsa')
+provides=('sononym')
+source=("$pkgname-$pkgver.tar.bz2::https://www.sononym.net/download/sononym-$pkgver.tar.bz2"
+        "sononym.desktop"
+        "sononym.png")
+sha256sums=('08f08433c1bd2d26be15fcd5d31a7bac06e05f58a2f3c6f8847b135537bdbc23'
+            '03b2092c185c865d3c737eba24737bd005a0ce3d1eb907b944db8210ce319ce7'
+            '5707f6c3a2fcdc83bdaf059d0b33fc2104b9184b2e910a641ae9ee92664d40e6')
+
+prepare () {
+cat <<EOF > sononym.sh
+  #!/usr/bin/env bash
+
+  exec /opt/${pkgname}-${pkgver}/sononym
+EOF
+}
+
+package() {
+
+  mkdir -p "${pkgdir}/opt/${pkgname}"
+
+  cp -r $pkgname-$pkgver/* "${pkgdir}/opt/${pkgname}"
+
+  install -vDm 644 "${pkgname}-${pkgver}/resources/Sononym-User-Manual.pdf" -t "${pkgdir}/usr/share/docs/${pkgname}/"
+
+  install -vDm 644 sononym.desktop -t "${pkgdir}/usr/share/applications/"
+
+  install -vDm 644 sononym.png -t "${pkgdir}/usr/share/icons/"
+
+  install -vDm 755 sononym.sh "${pkgdir}/usr/local/bin/${pkgname}"
+
+}

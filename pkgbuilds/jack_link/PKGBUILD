@@ -1,0 +1,43 @@
+# Maintainer: {{ user.realname }} <{{ user.email }}>
+
+_name=jack_link
+pkgname=jack_link-git
+pkgver=v0.1.8.r0.g2065e45
+pkgrel=1
+pkgdesc="JACK transport timebase bridge to Ableton Link"
+arch=('x86_64' 'x86_64_v3')
+url="https://github.com/rncbc/jack_link.git"
+license=('GPL')
+groups=('pro-audio')
+depends=('jack2')
+makedepends=('git' 'asio')
+optdepends=('jack2-dbus')
+provides=('jack_link' 'jack_link-git')
+conflicts=('jack_link' 'jack_link-git')
+source=("git+https://github.com/rncbc/jack_link.git")
+sha256sums=('SKIP')
+
+pkgver() {
+  cd $_name
+  git describe --long --tags | sed -r 's/([^-]*-g)/r\1/;s/-/./g'
+}
+
+prepare() {
+  cd $_name
+  git submodule init
+  git submodule update
+
+}
+
+build() {
+	cd $_name
+	make
+}
+
+package() {
+	cd $_name
+
+  make PREFIX="/usr" DESTDIR="$pkgdir/" install
+
+  install -vDm 644 README.md -t "$pkgdir/usr/share/doc/$_name/"
+}
