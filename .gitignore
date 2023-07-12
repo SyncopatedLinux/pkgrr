@@ -10,3 +10,5 @@ pkgdesc
 *.log
 *.zst
 sononym-1.4.2.tar.bz2
+*.tar.gz
+README_v2.md

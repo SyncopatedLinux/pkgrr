@@ -49,7 +49,6 @@ CXXFLAGS="$CFLAGS -Wp,-D_GLIBCXX_ASSERTIONS"
 LDFLAGS="-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now"
 DFLAGS='-L-zrelro -L-znow'
 LTOFLAGS="-flto=auto"
-#RUSTFLAGS=""
 RUSTFLAGS="-C opt-level=2 -C target-cpu=native"
 #-- Make Flags: change this for DistCC/SMP systems
 MAKEFLAGS="-j{{ ansible_processor_cores }}"
@@ -100,7 +99,7 @@ BUILDDIR=/tmp/makepkg
 #-- debug:      Add debugging flags as specified in DEBUG_* variables
 #-- lto:        Add compile flags for building with link time optimization
 #
-OPTIONS=(strip docs !libtool !staticlibs emptydirs zipman purge !debug lto)
+OPTIONS=(strip docs !libtool !staticlibs emptydirs zipman purge !debug !lto)
 
 #-- File integrity checks to use. Valid: md5, sha1, sha224, sha256, sha384, sha512, b2
 INTEGRITY_CHECK=(sha256)

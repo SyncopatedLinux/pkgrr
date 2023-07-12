@@ -6,7 +6,7 @@
 
 _name=sonic-pi
 pkgname=sonic-pi-git
-pkgver=v4.4.0.r6.g6f5defa81
+pkgver=v4.4.0.r12.g7e4ef91ce
 pkgrel=1
 pkgdesc="The Live Coding Music Synth for Everyone"
 arch=('i686' 'x86_64' 'x86_64_v3')
@@ -23,11 +23,10 @@ depends=('aubio' 'boost' 'cmake' 'elixir' 'erlang-nox' 'gcc-libs' 'gendesk'
 'sc3-plugins' 'sox' 'supercollider')
 makedepends=('boost' 'curl' 'ninja' 'cmake' 'git' 'erlang-nox' 'gendesk' 'lua' 'qt5-tools' 'wkhtmltopdf-static' 'zip' 'unzip' 'tar' 'gcc12')
 source=('git+https://github.com/samaaron/sonic-pi.git'
-        # "${_name}-4.3.0-rugged_compile_flags.patch"
-        # "${_name}-4.3.0-find_package_glew.patch"
-        # "${_name}-4.4.0-gcc12.patch"
+        "${_name}-4.4.0-gcc12.patch"
         "${_name}.sh")
 sha512sums=('SKIP'
+            '5af106fc5bbb4bc35c5cd3e90f5f6ac53569222a927f22e487db3a2ba88de9955370dcc7d3ede8791fbbf0a499d11787042a93667403358f78cafa114d9b3861'
             'bb578996b305fbb07b95610caf1fc1a08c760a49cf3902f012ed49ee4404f7d8c10d66aded88e538b20c811b4bb21c4e17f47761863eebd2bff2792ec38a738d')
 
 pkgver() {
@@ -49,7 +48,7 @@ prepare() {
 
   # patch -Np1 -i "../${_name}-4.3.0-rugged_compile_flags.patch"
   #
-  # patch -Np1 -i "../${_name}-4.4.0-gcc12.patch"
+  patch -Np1 -i "../${_name}-4.4.0-gcc12.patch"
 
 }
 

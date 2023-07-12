@@ -23,19 +23,15 @@ for arch in ${architectures[@]}; do
 
   cd "${PACKAGES}/${arch}"
 
-  declare -Ax package_list=$(fd -e .zst -a)
+  echo "select package(s) to move into the repository"
+  echo -e "press CTRL+C to select nothing\n"
 
-  if [[ -z $package_list ]]; then
-    echo "package list empty"
-  else
-    echo "select package(s) to move into the repository"
-    echo -e "press CTRL+C to select nothing\n"
-    package_selection=$(echo ${package_list[@]} | gum filter --no-limit --height 30)
-  fi
+  package_selection=$(fd . -e .zst -a ${PACKAGES}/${arch} -x echo -e {} | gum filter --no-limit --height 30)
 
   if [[ -z $package_selection ]]; then
 
     echo "package selection empty"
+    exit
 
   else
 

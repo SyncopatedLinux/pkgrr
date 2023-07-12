@@ -1,6 +1,6 @@
 pkgbase = sonic-pi-git
 	pkgdesc = The Live Coding Music Synth for Everyone
-	pkgver = v4.4.0.r6.g6f5defa81
+	pkgver = v4.4.0.r12.g7e4ef91ce
 	pkgrel = 1
 	url = http://sonic-pi.net/
 	arch = i686
@@ -66,8 +66,10 @@ pkgbase = sonic-pi-git
 	provides = sonic-pi
 	conflicts = sonic-pi
 	source = git+https://github.com/samaaron/sonic-pi.git
+	source = sonic-pi-4.4.0-gcc12.patch
 	source = sonic-pi.sh
 	sha512sums = SKIP
+	sha512sums = 5af106fc5bbb4bc35c5cd3e90f5f6ac53569222a927f22e487db3a2ba88de9955370dcc7d3ede8791fbbf0a499d11787042a93667403358f78cafa114d9b3861
 	sha512sums = bb578996b305fbb07b95610caf1fc1a08c760a49cf3902f012ed49ee4404f7d8c10d66aded88e538b20c811b4bb21c4e17f47761863eebd2bff2792ec38a738d
 
 pkgname = sonic-pi-git
